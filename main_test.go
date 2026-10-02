@@ -54,6 +54,14 @@ func TestWebsiteRoutes(t *testing.T) {
 			wantHeaderText: "text/css",
 		},
 		{
+			name:           "canonical logo asset",
+			path:           "/assets/logo.svg",
+			wantStatus:     http.StatusOK,
+			wantContent:    "viewBox=\"0 0 64 64\"",
+			wantHeader:     "Content-Type",
+			wantHeaderText: "image/svg+xml",
+		},
+		{
 			name:       "unknown page",
 			path:       "/not-a-page",
 			wantStatus: http.StatusNotFound,
@@ -97,6 +105,8 @@ func TestWebsiteRoutes(t *testing.T) {
 	for _, content := range []string{
 		"https://docs.printmaster.work/media/docs/screenshots/Dashboard%20-%20PrintMaster%20Server.png",
 		"Real PrintMaster Server screenshot · demo/test data",
+		"<link rel=\"icon\" href=\"/assets/logo.svg\"",
+		"class=\"brand-mark\" src=\"/assets/logo.svg\"",
 	} {
 		if !strings.Contains(res.Body.String(), content) {
 			t.Errorf("homepage does not contain real screenshot content %q", content)
