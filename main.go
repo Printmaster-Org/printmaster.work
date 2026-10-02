@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"log"
@@ -14,10 +15,21 @@ import (
 var siteFiles embed.FS
 
 func main() {
-	handler, err := newHandler()
+	releases := newReleaseCatalogService(
+		os.Getenv("GITHUB_API_URL"),
+		os.Getenv("GITHUB_TOKEN"),
+		os.Getenv("RELEASE_WEBHOOK_SECRET"),
+		&http.Client{Timeout: 8 * time.Second},
+	)
+	handler, err := newHandlerWithReleaseService(releases)
 	if err != nil {
 		log.Fatalf("initialize website handler: %v", err)
 	}
+	startupCtx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	if err := releases.Refresh(startupCtx, ""); err != nil {
+		log.Printf("initial GitHub release metadata refresh failed: %v", err)
+	}
+	cancel()
 
 	server := &http.Server{
 		Addr:              listenAddress(),
@@ -32,12 +44,26 @@ func main() {
 }
 
 func newHandler() (http.Handler, error) {
+	releases := newReleaseCatalogService(
+		os.Getenv("GITHUB_API_URL"),
+		os.Getenv("GITHUB_TOKEN"),
+		os.Getenv("RELEASE_WEBHOOK_SECRET"),
+		&http.Client{Timeout: 8 * time.Second},
+	)
+	return newHandlerWithReleaseService(releases)
+}
+
+func newHandlerWithReleaseService(releases *releaseCatalogService) (http.Handler, error) {
 	assets, err := fs.Sub(siteFiles, "web/assets")
 	if err != nil {
 		return nil, err
 	}
 
 	homepage, err := siteFiles.ReadFile("web/index.html")
+	if err != nil {
+		return nil, err
+	}
+	downloadsPage, err := siteFiles.ReadFile("web/downloads.html")
 	if err != nil {
 		return nil, err
 	}
@@ -48,6 +74,15 @@ func newHandler() (http.Handler, error) {
 		_, _ = w.Write([]byte("ok\n"))
 	})
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(assets))))
+	mux.HandleFunc("GET /api/releases", releases.handleHTTP)
+	mux.HandleFunc("POST /api/releases/refresh", releases.handleRefreshHTTP)
+	mux.HandleFunc("GET /downloads", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-cache")
+		if _, err := w.Write(downloadsPage); err != nil {
+			log.Printf("write downloads page: %v", err)
+		}
+	})
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
 			http.NotFound(w, r)

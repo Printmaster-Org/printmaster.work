@@ -54,6 +54,14 @@ func TestWebsiteRoutes(t *testing.T) {
 			wantHeaderText: "text/css",
 		},
 		{
+			name:           "downloads page",
+			path:           "/downloads",
+			wantStatus:     http.StatusOK,
+			wantContent:    "Official PrintMaster downloads",
+			wantHeader:     "Content-Type",
+			wantHeaderText: "text/html; charset=utf-8",
+		},
+		{
 			name:           "canonical logo asset",
 			path:           "/assets/logo.svg",
 			wantStatus:     http.StatusOK,
@@ -107,18 +115,18 @@ func TestWebsiteRoutes(t *testing.T) {
 		"Real PrintMaster Server screenshot · demo/test data",
 		"<link rel=\"icon\" href=\"/assets/logo.svg\"",
 		"class=\"brand-mark\" src=\"/assets/logo.svg\"",
-		"href=\"https://github.com/printmaster-org/printmaster/releases/latest\"",
-		"href=\"https://github.com/printmaster-org/printmaster/releases\">Releases</a>",
+		"href=\"/downloads#agent\"",
+		"href=\"https://github.com/printmaster-org/printmaster/releases\">All releases</a>",
 	} {
 		if !strings.Contains(res.Body.String(), content) {
 			t.Errorf("homepage does not contain real screenshot content %q", content)
 		}
 	}
-	if got := strings.Count(res.Body.String(), "https://github.com/printmaster-org/printmaster/releases/latest"); got != 3 {
-		t.Errorf("homepage has %d latest-release download links, want 3", got)
+	if got := strings.Count(res.Body.String(), "href=\"/downloads#agent\""); got != 3 {
+		t.Errorf("homepage has %d Agent downloads links, want 3", got)
 	}
-	if strings.Contains(res.Body.String(), "href=\"https://github.com/printmaster-org/printmaster/releases\" class=\"button button-primary") {
-		t.Error("primary download button points to the all-releases archive")
+	if strings.Contains(res.Body.String(), "class=\"button button-primary\" href=\"https://github.com/printmaster-org/printmaster/releases") {
+		t.Error("primary download button points directly to GitHub instead of downloads page")
 	}
 	for _, inventedValue := range []string{"42,891", "fleet.printmaster.local", "Sites connected"} {
 		if strings.Contains(res.Body.String(), inventedValue) {
