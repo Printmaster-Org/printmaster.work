@@ -14,9 +14,32 @@ import (
 var siteFiles embed.FS
 
 func main() {
+	handler, err := newHandler()
+	if err != nil {
+		log.Fatalf("initialize website handler: %v", err)
+	}
+
+	server := &http.Server{
+		Addr:              listenAddress(),
+		Handler:           handler,
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+
+	log.Printf("PrintMaster website listening on %s", server.Addr)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("website server: %v", err)
+	}
+}
+
+func newHandler() (http.Handler, error) {
 	assets, err := fs.Sub(siteFiles, "web/assets")
 	if err != nil {
-		log.Fatalf("load web assets: %v", err)
+		return nil, err
+	}
+
+	homepage, err := siteFiles.ReadFile("web/index.html")
+	if err != nil {
+		return nil, err
 	}
 
 	mux := http.NewServeMux()
@@ -33,21 +56,12 @@ func main() {
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Cache-Control", "no-cache")
-		if _, err := w.Write(mustRead("web/index.html")); err != nil {
+		if _, err := w.Write(homepage); err != nil {
 			log.Printf("write homepage: %v", err)
 		}
 	})
 
-	server := &http.Server{
-		Addr:              listenAddress(),
-		Handler:           secureHeaders(mux),
-		ReadHeaderTimeout: 5 * time.Second,
-	}
-
-	log.Printf("PrintMaster website listening on %s", server.Addr)
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("website server: %v", err)
-	}
+	return secureHeaders(mux), nil
 }
 
 func listenAddress() string {
@@ -59,14 +73,6 @@ func listenAddress() string {
 		port = ":" + port
 	}
 	return port
-}
-
-func mustRead(name string) []byte {
-	contents, err := siteFiles.ReadFile(name)
-	if err != nil {
-		log.Fatalf("read embedded file %q: %v", name, err)
-	}
-	return contents
 }
 
 func secureHeaders(next http.Handler) http.Handler {
