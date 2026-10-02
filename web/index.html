@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#002b36">
+  <meta name="description" content="Discover, monitor, and manage printer fleets with PrintMaster: open-source, self-hosted printer and copier monitoring for IT teams and service providers.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PrintMaster — Know your print fleet">
+  <meta property="og:description" content="Open-source printer and copier discovery and fleet monitoring. Self-hosted, multi-site ready, and built for the networks you manage.">
+  <meta property="og:url" content="https://printmaster.work/">
+  <title>PrintMaster — Know your print fleet</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#top" aria-label="PrintMaster home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M10 4h20v9H10zM7 15h26a3 3 0 0 1 3 3v11h-7v7H11v-7H4V18a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 24h16v10H12zM29 19h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 28h10M15 31h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <span class="brand-name">Print<span>Master</span></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+        <a href="#platform">Platform</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#install">Install</a>
+        <a href="https://docs.printmaster.work/">Docs <span aria-hidden="true">↗</span></a>
+        <a class="nav-github" href="https://github.com/printmaster-org/printmaster" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Open-source print fleet monitoring</div>
+          <h1>Know your print fleet.<br><span>Without the busywork.</span></h1>
+          <p class="hero-lede">Discover network printers, keep an eye on fleet health, and see what’s happening across your sites — from one self-hosted platform.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/printmaster-org/printmaster/releases">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2v10m0 0 4-4m-4 4L6 8M3 14v3h14v-3"/></svg>
+              Download for Windows <span class="button-sub">MSI · x64</span>
+            </a>
+            <a class="button button-secondary" href="#install">Explore Linux installs <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-meta">
+            <span><span class="check">✓</span> Free &amp; open source</span>
+            <span><span class="check">✓</span> Self-hosted</span>
+            <span><span class="check">✓</span> Windows · Linux · macOS · Docker</span>
+          </div>
+        </div>
+
+        <div class="preview-wrap" aria-label="Illustrative preview of the PrintMaster fleet dashboard">
+          <div class="preview-orbit orbit-one"></div><div class="preview-orbit orbit-two"></div>
+          <div class="dashboard-window">
+            <div class="window-bar">
+              <div class="window-dots"><i></i><i></i><i></i></div>
+              <div class="window-address"><span class="lock-icon">⌑</span> fleet.printmaster.local</div>
+              <span class="window-menu">•••</span>
+            </div>
+            <div class="dashboard">
+              <aside class="dash-sidebar">
+                <div class="dash-brand"><span class="mini-mark">P</span><b>PrintMaster</b></div>
+                <div class="dash-nav active"><span class="dash-icon grid-icon"></span> Overview</div>
+                <div class="dash-nav"><span class="dash-icon printer-icon"></span> Devices <span class="side-count">248</span></div>
+                <div class="dash-nav"><span class="dash-icon site-icon"></span> Agents</div>
+                <div class="dash-nav"><span class="dash-icon chart-icon"></span> Metrics</div>
+                <div class="dash-sidebar-bottom"><span class="online-indicator"></span> Fleet connected</div>
+              </aside>
+              <div class="dash-main">
+                <div class="dash-topline"><div><span class="dash-kicker">FLEET OVERVIEW</span><h3>Good morning, team</h3></div><div class="avatar">IT</div></div>
+                <div class="dash-stats">
+                  <div class="stat-card"><span>Total devices</span><strong>248</strong><small><i class="tiny-dot blue"></i> Across 12 sites</small></div>
+                  <div class="stat-card"><span>Online agents</span><strong>11 <em>/ 12</em></strong><small><i class="tiny-dot green"></i> Fleet reporting</small></div>
+                  <div class="stat-card"><span>Needs attention</span><strong>04</strong><small><i class="tiny-dot amber"></i> Review status</small></div>
+                </div>
+                <div class="dash-content-grid">
+                  <div class="chart-card"><div class="chart-heading"><div><span class="dash-kicker">PRINT ACTIVITY</span><b>Fleet usage</b></div><span class="chart-period">Last 7 days⌄</span></div>
+                    <div class="chart-total">42,891 <span>pages tracked</span></div>
+                    <div class="chart-area"><div class="chart-y-labels"><span>12k</span><span>8k</span><span>4k</span><span>0</span></div><svg viewBox="0 0 440 126" preserveAspectRatio="none" aria-label="Illustrative seven-day fleet activity chart"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2aa198" stop-opacity=".34"/><stop offset="1" stop-color="#2aa198" stop-opacity="0"/></linearGradient></defs><path d="M0 100 C25 90 40 96 62 70 S105 78 126 61 S161 82 188 51 S226 67 250 37 S292 55 315 43 S352 51 375 25 S415 35 440 12 V126 H0Z" fill="url(#areaFill)"/><path d="M0 100 C25 90 40 96 62 70 S105 78 126 61 S161 82 188 51 S226 67 250 37 S292 55 315 43 S352 51 375 25 S415 35 440 12" fill="none" stroke="#2aa198" stroke-width="3" stroke-linecap="round"/></svg></div>
+                    <div class="chart-x-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+                  </div>
+                  <div class="activity-card"><div class="chart-heading"><div><span class="dash-kicker">FLEET STATUS</span><b>Device health</b></div><span class="more">•••</span></div>
+                    <div class="health-ring"><div><strong>96<span>%</span></strong><small>healthy</small></div></div>
+                    <div class="health-legend"><span><i class="tiny-dot green"></i> Normal <b>238</b></span><span><i class="tiny-dot amber"></i> Attention <b>08</b></span><span><i class="tiny-dot red"></i> Offline <b>02</b></span></div>
+                  </div>
+                </div>
+                <div class="dash-table"><div class="table-head"><span>RECENT DEVICES</span><span>View fleet →</span></div><div class="device-row"><span class="device-glyph">▣</span><span><b>Color Laser · 4F</b><small>North office</small></span><span class="device-state"><i class="tiny-dot green"></i> Online</span><span class="device-meter">Toner <b>72%</b></span></div><div class="device-row"><span class="device-glyph">▣</span><span><b>WorkCentre · 2F</b><small>East branch</small></span><span class="device-state"><i class="tiny-dot amber"></i> Attention</span><span class="device-meter">Toner <b>18%</b></span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="float-chip chip-agents"><span class="chip-icon">⌁</span><span><b>Sites connected</b><small>Distributed, one view</small></span><span class="chip-value">12</span></div>
+          <div class="float-chip chip-live"><span class="live-pulse"></span> Fleet status, at a glance</div>
+          <p class="preview-caption">Illustrative dashboard preview · sample data</p>
+        </div>
+      </div>
+      <div class="container hero-bottom"><span>Built for the people who keep workplaces running</span><div class="audience-list"><span>IT teams</span><i></i><span>MSPs &amp; MPS providers</span><i></i><span>Copier dealers</span></div></div>
+    </section>
+
+    <section class="section platform-section" id="platform">
+      <div class="container">
+        <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-dot"></span> One clear picture</div><h2>Print infrastructure,<br><span>minus the blind spots.</span></h2></div><p>Make sense of a mixed printer fleet without bouncing between vendor tools. PrintMaster brings discovery, device details, and fleet visibility together.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card feature-large"><div class="feature-icon icon-cyan"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5M11 7v8m-4-4h8"/></svg></div><div class="feature-art scan-art" aria-hidden="true"><span class="scan-ring ring-a"></span><span class="scan-ring ring-b"></span><span class="scan-cross">⌖</span><span class="scan-node node-a"></span><span class="scan-node node-b"></span><span class="scan-node node-c"></span><span class="scan-label">NETWORK SCAN</span></div><h3>Find printers already on your network</h3><p>Discover reachable, SNMP-enabled printers and copiers. Start with configured IP ranges, then inspect discovered devices before adding them to your inventory.</p><a href="https://docs.printmaster.work/" class="text-link">Explore discovery <span>↗</span></a></article>
+          <article class="feature-card"><div class="feature-icon icon-gold"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17M7 15l4-5 4 3 6-8"/><circle cx="7" cy="15" r="1"/><circle cx="11" cy="10" r="1"/><circle cx="15" cy="13" r="1"/></svg></div><div class="mini-chart-art" aria-hidden="true"><span style="--h:32%"></span><span style="--h:56%"></span><span style="--h:44%"></span><span style="--h:76%"></span><span style="--h:62%"></span><span style="--h:90%"></span><span style="--h:70%"></span></div><h3>See what devices report</h3><p>Review page counters, supply levels, identity, and status data collected from supported devices.</p><a href="https://docs.printmaster.work/" class="text-link">See what’s collected <span>↗</span></a></article>
+          <article class="feature-card"><div class="feature-icon icon-teal"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.5 6h7M7.5 8l3.2 7.5m5.8-7.5L13.3 15.5"/></svg></div><div class="network-art" aria-hidden="true"><span class="network-hub">PM</span><span class="network-point p1"></span><span class="network-point p2"></span><span class="network-point p3"></span><span class="network-line l1"></span><span class="network-line l2"></span><span class="network-line l3"></span></div><h3>One site or many</h3><p>Run an Agent on its own or connect site Agents to a central Server for fleet-wide visibility.</p><a href="#how-it-works" class="text-link">Understand the setup <span>↓</span></a></article>
+          <article class="feature-card"><div class="feature-icon icon-blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4m-5-9 3-3 2 2 4-4"/></svg></div><div class="remote-art" aria-hidden="true"><span class="remote-window">⌂<i></i><i></i><i></i></span><span class="remote-arrow">↗</span></div><h3>Reach the remote site</h3><p>Use the Server’s agent proxy to reach connected Agent interfaces and printer admin pages without juggling site-by-site bookmarks.</p><a href="https://docs.printmaster.work/" class="text-link">Read about remote access <span>↗</span></a></article>
+        </div>
+        <p class="fine-print">Device data and available metrics vary by printer model, firmware, and SNMP configuration.</p>
+      </div>
+    </section>
+
+    <section class="section architecture-section" id="how-it-works">
+      <div class="container architecture-layout">
+        <div class="architecture-copy"><div class="eyebrow"><span class="eyebrow-dot"></span> Simple by design</div><h2>Start local.<br><span>Scale when ready.</span></h2><p>PrintMaster is built around a small Agent that lives close to the printers. Keep its data local, or connect it to a central Server when you need a view across sites.</p><div class="architecture-note"><span class="note-icon">↗</span><p><b>No central server required.</b><br>A single Agent works on its own. Add a Server when multi-site fleet management makes sense.</p></div><a class="text-link" href="https://docs.printmaster.work/">See the architecture guide <span>↗</span></a></div>
+        <div class="architecture-visual" role="img" aria-label="PrintMaster Agents at each site optionally report to a central Server">
+          <div class="arch-server"><span class="arch-icon server-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01M12 6.5h4m-4 11h4"/></svg></span><span><b>PrintMaster Server</b><small>Central fleet view · optional</small></span><span class="server-live"><i></i> Ready</span></div>
+          <div class="arch-lines"><span class="arch-line line-left"></span><span class="arch-line line-mid"></span><span class="arch-line line-right"></span><span class="flow-dot flow-left"></span><span class="flow-dot flow-mid"></span><span class="flow-dot flow-right"></span><span class="line-label">Agent reports device data</span></div>
+          <div class="site-cards"><div class="site-card"><div class="site-card-title"><span class="site-pin">⌖</span><span><b>North office</b><small>Site Agent</small></span><i class="site-status"></i></div><div class="site-printers"><span>▣</span><span>▣</span><span>▣</span><span class="site-count">+18</span></div><div class="site-footer">Local discovery <span>● Connected</span></div></div><div class="site-card"><div class="site-card-title"><span class="site-pin">⌖</span><span><b>East branch</b><small>Site Agent</small></span><i class="site-status"></i></div><div class="site-printers"><span>▣</span><span>▣</span><span>▣</span><span class="site-count">+7</span></div><div class="site-footer">Local discovery <span>● Connected</span></div></div><div class="site-card"><div class="site-card-title"><span class="site-pin">⌖</span><span><b>West office</b><small>Site Agent</small></span><i class="site-status"></i></div><div class="site-printers"><span>▣</span><span>▣</span><span>▣</span><span class="site-count">+12</span></div><div class="site-footer">Local discovery <span>● Connected</span></div></div></div>
+          <div class="arch-footnote"><span class="check">✓</span> Agents can run standalone or report to a Server</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="download-section" id="download">
+      <div class="container download-layout"><div><div class="eyebrow"><span class="eyebrow-dot"></span> Get started</div><h2>Your fleet’s next<br><span>clear view starts here.</span></h2><p>Install a PrintMaster Agent at a site you manage. No account or hosted service required.</p></div><div class="download-panel"><div class="download-panel-top"><div class="windows-icon"><svg viewBox="0 0 24 24"><path d="M3 5.4 10.2 4v7H3zm8.7-1.7L21 2v9h-9.3zM3 13h7.2v7L3 18.6zm8.7 0H21v9l-9.3-1.7z"/></svg></div><div><span class="download-label">RECOMMENDED FOR WINDOWS</span><h3>PrintMaster Agent</h3><p>Windows installer · MSI · x64</p></div><span class="download-version">Latest release</span></div><a class="button button-primary download-button" href="https://github.com/printmaster-org/printmaster/releases">Download Windows MSI <span aria-hidden="true">↓</span></a><p class="download-foot">Opens GitHub Releases · Choose the latest <b>agent-v…</b> release and its <b>windows-amd64.msi</b> installer.</p><div class="download-divider"><span>or install on Linux</span></div><div class="linux-links"><a href="#install">Debian / Ubuntu <span>→</span></a><a href="#install">Fedora / RHEL <span>→</span></a></div></div></div>
+    </section>
+
+    <section class="section install-section" id="install">
+      <div class="container"><div class="section-heading install-heading"><div><div class="eyebrow"><span class="eyebrow-dot"></span> First-time setup</div><h2>Pick your platform.<br><span>Be scanning in minutes.</span></h2></div><p>Install the Agent where it can reach your printer network. Add a Server later if you want to bring multiple sites together.</p></div>
+        <div class="install-grid">
+          <article class="install-card"><div class="install-card-head"><span class="os-icon debian-icon">A</span><div><h3>Debian &amp; Ubuntu</h3><p>Use the official install helper</p></div><span class="package-badge">APT</span></div><div class="code-block"><span class="code-label">TERMINAL</span><code>curl -fsSL https://packages.printmaster.work/install.sh | sudo bash</code><button class="copy-button" type="button" aria-label="Copy Debian and Ubuntu install command" data-copy="curl -fsSL https://packages.printmaster.work/install.sh | sudo bash">Copy</button></div><div class="install-next"><b>Then start the service</b><code>sudo systemctl enable --now printmaster-agent</code></div><a class="text-link" href="https://packages.printmaster.work/">APT package repository <span>↗</span></a></article>
+          <article class="install-card"><div class="install-card-head"><span class="os-icon fedora-icon">f</span><div><h3>Fedora &amp; RHEL</h3><p>Add the official RPM repository</p></div><span class="package-badge">RPM</span></div><div class="code-block code-multiline"><span class="code-label">TERMINAL</span><code>sudo rpm --import https://packages.printmaster.work/gpg.key<br>sudo curl -fsSL https://packages.printmaster.work/printmaster.repo -o /etc/yum.repos.d/printmaster.repo<br>sudo dnf install -y printmaster-agent</code><button class="copy-button" type="button" aria-label="Copy Fedora and RHEL install commands" data-copy="sudo rpm --import https://packages.printmaster.work/gpg.key&#10;sudo curl -fsSL https://packages.printmaster.work/printmaster.repo -o /etc/yum.repos.d/printmaster.repo&#10;sudo dnf install -y printmaster-agent">Copy</button></div><div class="install-next"><b>Check service status</b><code>sudo systemctl status printmaster-agent</code></div><a class="text-link" href="https://packages.printmaster.work/rpm">RPM package repository <span>↗</span></a></article>
+          <article class="install-card install-card-wide"><div class="install-card-head"><span class="os-icon windows-card-icon"><svg viewBox="0 0 24 24"><path d="M3 5.4 10.2 4v7H3zm8.7-1.7L21 2v9h-9.3zM3 13h7.2v7L3 18.6zm8.7 0H21v9l-9.3-1.7z"/></svg></span><div><h3>Windows</h3><p>Download the MSI from GitHub Releases</p></div><span class="package-badge">MSI</span></div><div class="windows-steps"><span><i>01</i> Download latest Agent release</span><span><i>02</i> Run the x64 MSI installer</span><span><i>03</i> Open <code>http://localhost:8080</code></span></div><a class="text-link" href="https://github.com/printmaster-org/printmaster/releases">Browse Windows downloads <span>↗</span></a></article>
+        </div>
+        <div class="after-install"><div class="after-install-icon">⌖</div><div><b>After install: discover your first printers</b><p>Open the Agent UI, set reachable IP ranges and SNMP settings, start a scan, then review and save discovered devices.</p></div><a href="https://docs.printmaster.work/">Open setup guide <span>↗</span></a></div>
+        <p class="install-caveat">SNMP must be enabled and reachable on devices for discovery and metrics collection. Package repositories serve the PrintMaster Agent; check platform requirements in the docs.</p>
+      </div>
+    </section>
+
+    <section class="section community-section">
+      <div class="container community-card"><div class="community-orb" aria-hidden="true"></div><div class="community-content"><div class="eyebrow"><span class="eyebrow-dot"></span> Built in the open</div><h2>Made for print people.<br><span>Improved together.</span></h2><p>PrintMaster is MIT-licensed open-source software. Browse the code, follow releases, or help improve device support with real-world feedback.</p><div class="community-actions"><a class="button button-primary" href="https://github.com/printmaster-org/printmaster">Explore on GitHub <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="https://github.com/printmaster-org/printmaster/discussions">Join the discussion <span aria-hidden="true">↗</span></a></div></div><div class="community-stats"><div><span class="stat-symbol">⌘</span><b>Open source</b><small>MIT licensed</small></div><div><span class="stat-symbol">⌁</span><b>Community built</b><small>Contributions welcome</small></div><div><span class="stat-symbol">↻</span><b>Actively evolving</b><small>Follow project releases</small></div></div></div>
+    </section>
+
+    <section class="faq-section">
+      <div class="container faq-layout"><div><div class="eyebrow"><span class="eyebrow-dot"></span> A few quick answers</div><h2>Before you<br><span>get started.</span></h2><a class="text-link" href="https://docs.printmaster.work/">Visit the documentation <span>↗</span></a></div><div class="faq-list">
+        <details><summary>Do I need to install a Server? <span></span></summary><p>No. An Agent can run standalone and provide its local web interface. The central Server is optional and intended for aggregating multiple site Agents.</p></details>
+        <details><summary>Will PrintMaster find every printer? <span></span></summary><p>Discovery depends on network reachability, SNMP configuration, and device support. Keep SNMP enabled and allow the Agent to reach the printer network; available data varies by model and firmware.</p></details>
+        <details><summary>Where do I get the Windows installer? <span></span></summary><p>Open GitHub Releases, choose the latest Agent release, and download its Windows x64 MSI. Release assets are versioned, so the Releases page is the stable download link.</p></details>
+        <details><summary>Where are installation and configuration guides? <span></span></summary><p>Visit the PrintMaster documentation site for step-by-step setup, configuration, deployment, and troubleshooting guides.</p></details>
+      </div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container"><div class="footer-top"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M10 4h20v9H10zM7 15h26a3 3 0 0 1 3 3v11h-7v7H11v-7H4V18a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 24h16v10H12zM29 19h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">Print<span>Master</span></span></a><p>Open-source printer fleet monitoring.<br>Made for the networks you manage.</p><div class="footer-links"><div><b>Explore</b><a href="#platform">Platform</a><a href="#install">Install</a><a href="https://docs.printmaster.work/">Documentation</a></div><div><b>Project</b><a href="https://github.com/printmaster-org/printmaster">GitHub</a><a href="https://github.com/printmaster-org/printmaster/releases">Releases</a><a href="https://github.com/printmaster-org/printmaster/issues">Issues</a><a href="https://github.com/printmaster-org/printmaster/discussions">Discussions</a></div><div><b>Packages</b><a href="https://packages.printmaster.work/">APT repository</a><a href="https://packages.printmaster.work/rpm">RPM repository</a></div></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> PrintMaster contributors</span><span>Open source · Self-hosted · MIT License</span><a href="https://github.com/printmaster-org/printmaster/blob/main/LICENSE">View license <span>↗</span></a></div></div></footer>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="/assets/site.js" defer></script>
+</body>
+</html>
