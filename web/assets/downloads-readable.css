@@ -1,0 +1,88 @@
+/* Downloads page: comfortable reading sizes at normal browser zoom. */
+.downloads-page { font-size: 16px; }
+.downloads-hero p { max-width: 760px; font-size: 17px; line-height: 1.75; }
+.download-source-note { font-size: 13px; }
+.source-check { width: 22px; height: 22px; font-size: 13px; }
+.section-kicker { font-size: 12px; letter-spacing: 1.15px; }
+.release-toolbar h2 { font-size: 34px; }
+.component-tab { min-width: 158px; padding: 11px 14px; font-size: 15px; }
+.component-tab span { font-size: 12px; }
+.release-status { gap: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.5; }
+.release-section-title { font-size: 25px; }
+.latest-release-card { padding: 26px; }
+.latest-card-top { gap: 16px; padding-bottom: 20px; }
+.latest-download-icon { width: 48px; height: 48px; font-size: 20px; }
+.release-version { font-size: 18px; }
+.release-badge { padding: 4px 8px; font-size: 10px; }
+.release-heading h3 { font-size: 14px; }
+.release-date { font-size: 12px; }
+.release-notes-link { font-size: 12px; }
+.featured-download-button { min-height: 54px; min-width: 270px; margin: 20px 0 8px; padding-inline: 18px; font-size: 15px; }
+.asset-section-title { margin: 19px 0 11px; font-size: 13px; }
+.asset-list, .featured-assets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.asset-link { gap: 4px; padding: 12px 14px; }
+.asset-label { font-size: 13px; line-height: 1.45; white-space: normal; }
+.asset-filename { font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; white-space: normal; }
+.asset-size { font-size: 12px; }
+.previous-release-card, .beta-release-card { border-radius: 9px; }
+.previous-release-summary { grid-template-columns: 100px minmax(0, 1fr) 120px 24px; gap: 13px; padding: 15px 17px; }
+.previous-version { font-size: 15px; }
+.previous-name { font-size: 13px; }
+.expand-icon { width: 22px; height: 22px; font-size: 16px; }
+.previous-release-details { padding: 0 17px 16px; }
+.previous-release-details .asset-list { margin-top: 14px; }
+.beta-release-section { padding: 25px; }
+.beta-heading > p { font-size: 13px; line-height: 1.65; }
+.release-empty-note { font-size: 13px; }
+.empty-release { padding: 25px; }
+.empty-release h3 { font-size: 19px; }
+.empty-release p { font-size: 13px; }
+.download-help-card { gap: 16px; padding: 20px 22px; }
+.download-help-icon { width: 32px; height: 32px; font-size: 18px; }
+.download-help-card h2 { font-size: 15px; }
+.download-help-card p { font-size: 12px; line-height: 1.7; }
+.download-help-card > .text-link { font-size: 12px; }
+
+@media (max-width: 760px) {
+  .downloads-hero p { font-size: 16px; }
+  .download-source-note { font-size: 12px; }
+  .component-tab { min-width: 0; padding: 10px 12px; font-size: 14px; }
+  .component-tab span { font-size: 11px; }
+  .release-status { font-size: 12px; }
+  .release-section-title { font-size: 23px; }
+  .latest-release-card { padding: 19px; }
+  .release-version { font-size: 17px; }
+  .release-heading h3 { font-size: 13px; }
+  .latest-card-top > .release-notes-link { font-size: 12px; }
+  .asset-list, .featured-assets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .asset-label { font-size: 12px; }
+  .asset-filename { font-size: 11px; }
+  .asset-size, .release-date { font-size: 12px; }
+  .previous-release-summary { grid-template-columns: 82px minmax(0, 1fr) 94px 22px; gap: 8px; padding: 13px; }
+  .previous-name { font-size: 12px; }
+  .previous-version { font-size: 14px; }
+  .beta-heading > p, .download-help-card p { font-size: 12px; }
+}
+
+@media (max-width: 440px) {
+  .downloads-hero h1 { font-size: 43px; letter-spacing: -2.4px; }
+  .downloads-hero p { font-size: 15px; }
+  .release-toolbar h2 { font-size: 29px; }
+  .component-tab { padding: 9px 8px; font-size: 13px; }
+  .component-tab span { font-size: 11px; }
+  .latest-card-top { flex-wrap: wrap; }
+  .latest-card-top .release-notes-link { margin-left: 50px; }
+  .featured-download-button { width: 100%; min-width: 0; }
+  .asset-list, .featured-assets { grid-template-columns: 1fr; }
+  .asset-link { padding: 11px 12px; }
+  .asset-label { font-size: 13px; }
+  .asset-filename { font-size: 11px; }
+  .previous-release-summary { grid-template-columns: 70px minmax(0, 1fr) 21px; gap: 6px; padding: 11px; }
+  .previous-release-summary .release-date { grid-column: 2; grid-row: 2; text-align: left; }
+  .previous-release-summary .expand-icon { grid-column: 3; grid-row: 1 / span 2; }
+  .previous-version { font-size: 13px; }
+  .previous-name { font-size: 12px; }
+  .release-status { align-items: flex-start; font-size: 12px; }
+  .beta-release-section { padding: 17px; }
+  .download-help-card > .text-link { width: 100%; margin-left: 48px; }
+}

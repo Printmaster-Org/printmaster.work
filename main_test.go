@@ -54,6 +54,14 @@ func TestWebsiteRoutes(t *testing.T) {
 			wantHeaderText: "text/css",
 		},
 		{
+			name:           "readable downloads stylesheet",
+			path:           "/assets/downloads-readable.css",
+			wantStatus:     http.StatusOK,
+			wantContent:    ".asset-label { font-size: 13px",
+			wantHeader:     "Content-Type",
+			wantHeaderText: "text/css",
+		},
+		{
 			name:           "downloads page",
 			path:           "/downloads",
 			wantStatus:     http.StatusOK,

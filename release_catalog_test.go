@@ -174,7 +174,7 @@ func TestDownloadsPageServed(t *testing.T) {
 	if res.Code != http.StatusOK {
 		t.Fatalf("downloads page status = %d", res.Code)
 	}
-	for _, expected := range []string{"Official PrintMaster downloads", "id=\"tab-agent\"", "id=\"tab-server\"", "/assets/downloads.js"} {
+	for _, expected := range []string{"Official PrintMaster downloads", "id=\"tab-agent\"", "id=\"tab-server\"", "/assets/downloads.js", "/assets/downloads-readable.css"} {
 		if !strings.Contains(res.Body.String(), expected) {
 			t.Errorf("downloads page missing %q", expected)
 		}
