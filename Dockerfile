@@ -6,7 +6,7 @@ COPY release_catalog.go ./
 COPY web ./web
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/printmaster-site .
 
-FROM alpine:3.21
+FROM alpine:3.24
 RUN addgroup -S -g 10001 web && adduser -S -D -H -u 10001 -G web web
 COPY --from=build /out/printmaster-site /usr/local/bin/printmaster-site
 LABEL org.opencontainers.image.title="PrintMaster Website" \
