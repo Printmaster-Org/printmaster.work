@@ -46,6 +46,14 @@ func TestWebsiteRoutes(t *testing.T) {
 			wantHeaderText: "text/css",
 		},
 		{
+			name:           "responsive screenshot stylesheet",
+			path:           "/assets/screenshot.css",
+			wantStatus:     http.StatusOK,
+			wantContent:    ".product-screenshot img",
+			wantHeader:     "Content-Type",
+			wantHeaderText: "text/css",
+		},
+		{
 			name:       "unknown page",
 			path:       "/not-a-page",
 			wantStatus: http.StatusNotFound,
@@ -82,6 +90,22 @@ func TestWebsiteRoutes(t *testing.T) {
 				t.Errorf("homepage Cache-Control = %q, want no-cache", res.Header().Get("Cache-Control"))
 			}
 		})
+	}
+
+	res := httptest.NewRecorder()
+	handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/", nil))
+	for _, content := range []string{
+		"https://docs.printmaster.work/media/docs/screenshots/Dashboard%20-%20PrintMaster%20Server.png",
+		"Real PrintMaster Server screenshot · demo/test data",
+	} {
+		if !strings.Contains(res.Body.String(), content) {
+			t.Errorf("homepage does not contain real screenshot content %q", content)
+		}
+	}
+	for _, inventedValue := range []string{"42,891", "fleet.printmaster.local", "Sites connected"} {
+		if strings.Contains(res.Body.String(), inventedValue) {
+			t.Errorf("homepage still contains fabricated dashboard content %q", inventedValue)
+		}
 	}
 }
 
