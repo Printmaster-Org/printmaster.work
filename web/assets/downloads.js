@@ -10,22 +10,6 @@
   let catalog = null;
   let selectedComponent = location.hash === '#server' ? 'server' : 'agent';
 
-  document.querySelectorAll('.menu-toggle').forEach((button) => {
-    const nav = document.querySelector(`#${button.getAttribute('aria-controls')}`);
-    button.addEventListener('click', () => {
-      const open = button.getAttribute('aria-expanded') === 'true';
-      button.setAttribute('aria-expanded', String(!open));
-      nav?.classList.toggle('open', !open);
-    });
-    nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-      button.setAttribute('aria-expanded', 'false');
-      nav.classList.remove('open');
-    }));
-  });
-
-  const year = document.querySelector('#year');
-  if (year) year.textContent = String(new Date().getFullYear());
-
   tabs.forEach((tab) => tab.addEventListener('click', () => {
     setComponent(tab.dataset.component);
   }));

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"embed"
+	"fmt"
+	"html/template"
 	"io/fs"
 	"log"
 	"net/http"
@@ -59,11 +62,23 @@ func newHandlerWithReleaseService(releases *releaseCatalogService) (http.Handler
 		return nil, err
 	}
 
-	homepage, err := siteFiles.ReadFile("web/index.html")
+	pages, err := template.ParseFS(siteFiles, "web/*.html", "web/templates/*.html")
+	if err != nil {
+		return nil, fmt.Errorf("parse page templates: %w", err)
+	}
+	renderPage := func(name string, home bool) ([]byte, error) {
+		var page bytes.Buffer
+		data := struct{ Home bool }{Home: home}
+		if err := pages.ExecuteTemplate(&page, name, data); err != nil {
+			return nil, fmt.Errorf("render %s: %w", name, err)
+		}
+		return page.Bytes(), nil
+	}
+	homepage, err := renderPage("index.html", true)
 	if err != nil {
 		return nil, err
 	}
-	downloadsPage, err := siteFiles.ReadFile("web/downloads.html")
+	downloadsPage, err := renderPage("downloads.html", false)
 	if err != nil {
 		return nil, err
 	}

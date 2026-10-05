@@ -143,6 +143,77 @@ func TestWebsiteRoutes(t *testing.T) {
 	}
 }
 
+func TestSharedPageTemplates(t *testing.T) {
+	t.Parallel()
+	handler, err := newHandler()
+	if err != nil {
+		t.Fatalf("newHandler() error = %v", err)
+	}
+
+	for _, path := range []string{"/", "/downloads"} {
+		t.Run(path, func(t *testing.T) {
+			t.Parallel()
+			res := httptest.NewRecorder()
+			handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, path, nil))
+			if res.Code != http.StatusOK {
+				t.Fatalf("status = %d, want %d", res.Code, http.StatusOK)
+			}
+			body := res.Body.String()
+			for _, marker := range []string{
+				`<header class="site-header">`,
+				`<footer class="site-footer">`,
+				`<a class="skip-link" href="#main">`,
+				`<script src="/assets/site.js" defer></script>`,
+				`data-goatcounter="https://stats.www.printmaster.work/count"`,
+				`async src="//gc.zgo.at/count.js"`,
+			} {
+				if got := strings.Count(body, marker); got != 1 {
+					t.Errorf("count of %q = %d, want 1", marker, got)
+				}
+			}
+			if strings.Contains(body, "{{") || strings.Contains(body, "ZgotmplZ") {
+				t.Error("page contains unrendered or unsafe template output")
+			}
+			prefix := ""
+			if path == "/downloads" {
+				prefix = "/"
+			}
+			for _, anchor := range []string{"platform", "how-it-works", "install"} {
+				if !strings.Contains(body, `href="`+prefix+`#`+anchor+`"`) {
+					t.Errorf("missing page-aware navigation for %s", anchor)
+				}
+			}
+			current := `href="/downloads" aria-current="page"`
+			if got, want := strings.Contains(body, current), path == "/downloads"; got != want {
+				t.Errorf("downloads current-page marker = %t, want %t", got, want)
+			}
+			if got := res.Header().Get("Cache-Control"); got != "no-cache" {
+				t.Errorf("Cache-Control = %q, want no-cache", got)
+			}
+		})
+	}
+}
+
+func TestSharedTemplatesAreNotPublic(t *testing.T) {
+	t.Parallel()
+	handler, err := newHandler()
+	if err != nil {
+		t.Fatalf("newHandler() error = %v", err)
+	}
+	for _, path := range []string{"/templates/header.html", "/templates/footer.html", "/web/templates/footer.html", "/assets/../templates/footer.html", "/healthz"} {
+		t.Run(path, func(t *testing.T) {
+			res := httptest.NewRecorder()
+			handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, path, nil))
+			if path != "/healthz" && res.Code == http.StatusOK {
+				t.Errorf("template path returned status OK")
+			}
+			if strings.Contains(res.Body.String(), "data-goatcounter") {
+				t.Error("non-page response contains analytics markup")
+			}
+		})
+	}
+}
+
 func TestListenAddress(t *testing.T) {
 	tests := []struct {
 		name string

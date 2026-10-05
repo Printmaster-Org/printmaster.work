@@ -16,26 +16,7 @@
   <link rel="stylesheet" href="/assets/screenshot.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="brand" href="#top" aria-label="PrintMaster home">
-        <img class="brand-mark" src="/assets/logo.svg" alt="" width="37" height="37">
-        <span class="brand-name">Print<span>Master</span></span>
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation">
-        <span></span><span></span><span></span>
-      </button>
-      <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
-        <a href="#platform">Platform</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#install">Install</a>
-        <a href="/downloads">Downloads</a>
-        <a href="https://docs.printmaster.work/">Docs <span aria-hidden="true">↗</span></a>
-        <a class="nav-github" href="https://github.com/printmaster-org/printmaster" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-      </nav>
-    </div>
-  </header>
+  {{ template "header" . }}
 
   <main id="main">
     <section class="hero" id="top">
@@ -125,9 +106,8 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-top"><a class="brand" href="#top"><img class="brand-mark" src="/assets/logo.svg" alt="" width="37" height="37"><span class="brand-name">Print<span>Master</span></span></a><p>Open-source printer fleet monitoring.<br>Made for the networks you manage.</p><div class="footer-links"><div><b>Explore</b><a href="#platform">Platform</a><a href="#install">Install</a><a href="/downloads">Downloads</a><a href="https://docs.printmaster.work/">Documentation</a></div><div><b>Project</b><a href="https://github.com/printmaster-org/printmaster">GitHub</a><a href="https://github.com/printmaster-org/printmaster/releases">All releases</a><a href="https://github.com/printmaster-org/printmaster/issues">Issues</a><a href="https://github.com/printmaster-org/printmaster/discussions">Discussions</a></div><div><b>Packages</b><a href="https://packages.printmaster.work/">APT repository</a><a href="https://packages.printmaster.work/rpm">RPM repository</a></div></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> PrintMaster contributors</span><span>Open source · Self-hosted · MIT License</span><a href="https://github.com/printmaster-org/printmaster/blob/main/LICENSE">View license <span>↗</span></a></div></div></footer>
+  {{ template "footer" . }}
 
   <div class="toast" role="status" aria-live="polite"></div>
-  <script src="/assets/site.js" defer></script>
 </body>
 </html>
