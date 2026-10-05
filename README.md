@@ -50,6 +50,7 @@ The workflow skips notification if its secret is unset, and notification failure
 
 - Pages in `web/*.html` are Go HTML templates, rendered once at startup and embedded alongside static assets. Shared navigation and footer live in `web/templates/header.html` and `web/templates/footer.html`; include both when adding a page and register its route in `main.go`.
 - The shared footer loads site-wide navigation/year behavior and the async GoatCounter script (`//gc.zgo.at/count.js`), reporting public page views to `https://stats.www.printmaster.work/count`. Analytics requires JavaScript and may be blocked by browser privacy settings; it does not run on API or health endpoints. This applies only to this public website, not the documentation site or self-hosted Agent/Server UIs.
+- Every page footer links **Site stats** to `https://stats.www.printmaster.work/`. The custom stats hostname needs its GoatCounter CNAME and HTTPS configuration; dashboard visibility is controlled in GoatCounter. The docs site has its own separate analytics integration and stats link at `https://stats.docs.printmaster.work/`.
 - Windows MSI downloads link directly to versioned GitHub Release assets from `/downloads`.
 - Debian/Ubuntu and Fedora/RHEL installation commands point to the official package endpoints.
 - `https://docs.printmaster.work/` is the planned separate documentation site.

@@ -166,6 +166,7 @@ func TestSharedPageTemplates(t *testing.T) {
 				`<script src="/assets/site.js" defer></script>`,
 				`data-goatcounter="https://stats.www.printmaster.work/count"`,
 				`async src="//gc.zgo.at/count.js"`,
+				`href="https://stats.www.printmaster.work/">Site stats</a>`,
 			} {
 				if got := strings.Count(body, marker); got != 1 {
 					t.Errorf("count of %q = %d, want 1", marker, got)
