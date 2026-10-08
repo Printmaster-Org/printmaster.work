@@ -42,6 +42,13 @@
 .download-help-card h2 { font-size: 15px; }
 .download-help-card p { font-size: 12px; line-height: 1.7; }
 .download-help-card > .text-link { font-size: 12px; }
+.dev-release-section { margin-top: 24px; }
+.developer-builds { border: 1px solid rgba(36, 92, 101, .58); border-radius: 9px; }
+.developer-builds > summary { padding: 14px 17px; color: #98afac; cursor: pointer; font-size: 13px; }
+.developer-builds-content { padding: 0 17px 17px; }
+.developer-builds-content > p { color: #98afac; font-size: 13px; line-height: 1.65; }
+.dev-release-list { display: grid; gap: 7px; }
+.beta-heading > p + p { margin-top: 10px; }
 
 @media (max-width: 760px) {
   .downloads-hero p { font-size: 16px; }

@@ -35,8 +35,17 @@ func TestReleaseCatalogFetchAndCache(t *testing.T) {
 	if len(catalog.Agent.Stable) != 2 || catalog.Agent.Stable[0].Version != "1.10.0" {
 		t.Fatalf("Agent stable releases = %#v; want semver-descending releases starting at 1.10.0", catalog.Agent.Stable)
 	}
-	if len(catalog.Agent.Beta) != 1 || catalog.Agent.Beta[0].Version != "1.11.0-dev.abc123" {
+	if len(catalog.Agent.Beta) != 1 || catalog.Agent.Beta[0].Version != "1.11.0-beta.1" {
 		t.Fatalf("Agent beta releases = %#v", catalog.Agent.Beta)
+	}
+	if len(catalog.Agent.Beta[0].Assets) != 3 {
+		t.Fatalf("Beta binary/DEB/RPM assets = %#v", catalog.Agent.Beta[0].Assets)
+	}
+	if len(catalog.Agent.Dev) != 1 || catalog.Agent.Dev[0].Version != "1.11.0-dev.abc123" {
+		t.Fatalf("Agent Dev releases = %#v", catalog.Agent.Dev)
+	}
+	if !catalogContainsTag(&catalog, catalog.Agent.Dev[0].TagName) {
+		t.Fatal("Dev tag must participate in duplicate webhook detection")
 	}
 	if len(catalog.Server.Stable) != 1 || catalog.Server.Stable[0].Version != "2.0.0" {
 		t.Fatalf("Server stable releases = %#v", catalog.Server.Stable)
@@ -174,7 +183,7 @@ func TestDownloadsPageServed(t *testing.T) {
 	if res.Code != http.StatusOK {
 		t.Fatalf("downloads page status = %d", res.Code)
 	}
-	for _, expected := range []string{"Official PrintMaster downloads", "id=\"tab-agent\"", "id=\"tab-server\"", "/assets/downloads.js", "/assets/downloads-readable.css"} {
+	for _, expected := range []string{"Official PrintMaster downloads", "id=\"tab-agent\"", "id=\"tab-server\"", "id=\"dev-releases\"", "Beta has no MSI", "/assets/downloads.js", "/assets/downloads-readable.css"} {
 		if !strings.Contains(res.Body.String(), expected) {
 			t.Errorf("downloads page missing %q", expected)
 		}
@@ -185,7 +194,8 @@ func releaseFixtureJSON() string {
 	return `[
 		{"tag_name":"agent-v1.9.0","name":"Agent 1.9","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/agent-v1.9.0","published_at":"2026-08-01T00:00:00Z","assets":[{"name":"printmaster-agent-v1.9.0-windows-amd64.msi","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.9.0/printmaster-agent-v1.9.0-windows-amd64.msi","size":100}]},
 		{"tag_name":"agent-v1.10.0","name":"Agent 1.10","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/agent-v1.10.0","published_at":"2026-08-02T00:00:00Z","assets":[{"name":"printmaster-agent-v1.10.0-windows-amd64.msi","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.10.0/printmaster-agent-v1.10.0-windows-amd64.msi","size":100},{"name":"setup.exe","browser_download_url":"https://example.com/setup.exe","size":20}]},
-		{"tag_name":"agent-v1.11.0-dev.abc123","name":"Agent beta","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/agent-v1.11.0-dev.abc123","prerelease":true,"published_at":"2026-08-03T00:00:00Z","assets":[{"name":"printmaster-agent-v1.11.0-dev.abc123-windows-amd64.exe","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.11.0-dev.abc123/printmaster-agent-v1.11.0-dev.abc123-windows-amd64.exe","size":100}]},
+		{"tag_name":"agent-v1.11.0-dev.abc123","name":"Agent Dev","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/agent-v1.11.0-dev.abc123","prerelease":true,"published_at":"2026-08-03T00:00:00Z","assets":[{"name":"printmaster-agent-v1.11.0-dev.abc123-windows-amd64.exe","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.11.0-dev.abc123/printmaster-agent-v1.11.0-dev.abc123-windows-amd64.exe","size":100}]},
+		{"tag_name":"agent-v1.11.0-beta.1","name":"Agent Beta","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/agent-v1.11.0-beta.1","prerelease":true,"published_at":"2026-08-03T00:00:00Z","assets":[{"name":"printmaster-agent-v1.11.0-beta.1-windows-amd64.exe","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.11.0-beta.1/printmaster-agent-v1.11.0-beta.1-windows-amd64.exe","size":100},{"name":"printmaster-agent_1.11.0-beta.1_amd64.deb","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.11.0-beta.1/printmaster-agent_1.11.0-beta.1_amd64.deb","size":100},{"name":"printmaster-agent-1.11.0-beta.1-1.fc44.x86_64.rpm","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/agent-v1.11.0-beta.1/printmaster-agent-1.11.0-beta.1-1.fc44.x86_64.rpm","size":100}]},
 		{"tag_name":"server-v2.0.0","name":"Server 2.0","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/server-v2.0.0","published_at":"2026-08-04T00:00:00Z","assets":[{"name":"printmaster-server-v2.0.0-linux-amd64","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/server-v2.0.0/printmaster-server-v2.0.0-linux-amd64","size":100}]},
 		{"tag_name":"server-v2.1.0","name":"Server beta","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/server-v2.1.0","prerelease":true,"published_at":"2026-08-05T00:00:00Z","assets":[{"name":"printmaster-server-v2.1.0-dev.abc123-linux-amd64","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/server-v2.1.0/printmaster-server-v2.1.0-dev.abc123-linux-amd64","size":100}]},
 		{"tag_name":"other-v8.0.0","html_url":"https://github.com/Printmaster-Org/printmaster/releases/tag/other-v8.0.0","assets":[{"name":"other-v8.0.0.exe","browser_download_url":"https://github.com/Printmaster-Org/printmaster/releases/download/other-v8.0.0/other-v8.0.0.exe","size":100}]},

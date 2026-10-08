@@ -49,6 +49,7 @@ type productRelease struct {
 type releaseChannels struct {
 	Stable []productRelease `json:"stable"`
 	Beta   []productRelease `json:"beta"`
+	Dev    []productRelease `json:"dev"`
 }
 
 type releaseCatalog struct {
@@ -195,7 +196,7 @@ func (s *releaseCatalogService) Refresh(ctx context.Context, tagName string) err
 
 func catalogContainsTag(catalog *releaseCatalog, tagName string) bool {
 	for _, channels := range []releaseChannels{catalog.Agent, catalog.Server} {
-		for _, releases := range [][]productRelease{channels.Stable, channels.Beta} {
+		for _, releases := range [][]productRelease{channels.Stable, channels.Beta, channels.Dev} {
 			for _, release := range releases {
 				if release.TagName == tagName {
 					return true
@@ -208,8 +209,8 @@ func catalogContainsTag(catalog *releaseCatalog, tagName string) bool {
 
 func (s *releaseCatalogService) fetch(ctx context.Context) (releaseCatalog, error) {
 	catalog := releaseCatalog{
-		Agent:  releaseChannels{Stable: []productRelease{}, Beta: []productRelease{}},
-		Server: releaseChannels{Stable: []productRelease{}, Beta: []productRelease{}},
+		Agent:  releaseChannels{Stable: []productRelease{}, Beta: []productRelease{}, Dev: []productRelease{}},
+		Server: releaseChannels{Stable: []productRelease{}, Beta: []productRelease{}, Dev: []productRelease{}},
 	}
 	for page := 1; page <= maxReleasePages; page++ {
 		endpoint, err := url.Parse(s.apiURL + "/repos/" + releaseRepoOwner + "/" + releaseRepoName + "/releases")
@@ -256,9 +257,12 @@ func (s *releaseCatalogService) fetch(ctx context.Context) (releaseCatalog, erro
 				continue
 			}
 			channels := channelsFor(&catalog, release.Component)
-			if isBetaRelease(raw.Prerelease, release.Version) {
+			switch releaseChannel(raw.Prerelease, release.Version) {
+			case "dev":
+				channels.Dev = append(channels.Dev, release)
+			case "beta":
 				channels.Beta = append(channels.Beta, release)
-			} else {
+			default:
 				channels.Stable = append(channels.Stable, release)
 			}
 		}
@@ -276,13 +280,22 @@ func (s *releaseCatalogService) fetch(ctx context.Context) (releaseCatalog, erro
 			return compareVersions(channels.Stable[i].Version, channels.Stable[j].Version) > 0
 		})
 		sort.SliceStable(channels.Beta, func(i, j int) bool {
+			if cmp := compareVersions(channels.Beta[i].Version, channels.Beta[j].Version); cmp != 0 {
+				return cmp > 0
+			}
 			return channels.Beta[i].PublishedAt.After(channels.Beta[j].PublishedAt)
+		})
+		sort.SliceStable(channels.Dev, func(i, j int) bool {
+			return channels.Dev[i].PublishedAt.After(channels.Dev[j].PublishedAt)
 		})
 		if len(channels.Stable) > releasesPerChannel {
 			channels.Stable = channels.Stable[:releasesPerChannel]
 		}
 		if len(channels.Beta) > releasesPerChannel {
 			channels.Beta = channels.Beta[:releasesPerChannel]
+		}
+		if len(channels.Dev) > releasesPerChannel {
+			channels.Dev = channels.Dev[:releasesPerChannel]
 		}
 	}
 	return catalog, nil
@@ -352,8 +365,16 @@ func trustedGitHubURL(raw string) bool {
 	return err == nil && parsed.Scheme == "https" && strings.EqualFold(parsed.Hostname(), "github.com")
 }
 
-func isBetaRelease(prerelease bool, version string) bool {
-	return prerelease || strings.Contains(version, "-")
+func releaseChannel(prerelease bool, version string) string {
+	core := strings.SplitN(strings.ToLower(version), "+", 2)[0]
+	parts := strings.SplitN(core, "-", 2)
+	if len(parts) == 2 && (parts[1] == "dev" || strings.HasPrefix(parts[1], "dev.")) {
+		return "dev"
+	}
+	if prerelease || len(parts) == 2 {
+		return "beta"
+	}
+	return "stable"
 }
 
 func channelsFor(catalog *releaseCatalog, component string) *releaseChannels {
@@ -364,7 +385,12 @@ func channelsFor(catalog *releaseCatalog, component string) *releaseChannels {
 }
 
 func catalogHasEnough(catalog *releaseCatalog) bool {
-	return len(catalog.Agent.Stable) >= releasesPerChannel && len(catalog.Server.Stable) >= releasesPerChannel
+	for _, channels := range []releaseChannels{catalog.Agent, catalog.Server} {
+		if len(channels.Stable) < releasesPerChannel || len(channels.Beta) < releasesPerChannel || len(channels.Dev) < releasesPerChannel {
+			return false
+		}
+	}
+	return true
 }
 
 func compareVersions(a, b string) int {
@@ -383,7 +409,7 @@ func compareVersions(a, b string) int {
 		}
 	}
 	if ma[4] == mb[4] {
-		return strings.Compare(ma[5], mb[5])
+		return 0
 	}
 	if ma[4] == "" {
 		return 1
@@ -391,5 +417,32 @@ func compareVersions(a, b string) int {
 	if mb[4] == "" {
 		return -1
 	}
-	return strings.Compare(ma[4], mb[4])
+	pa, pb := strings.Split(ma[4][1:], "."), strings.Split(mb[4][1:], ".")
+	for i := 0; i < len(pa) && i < len(pb); i++ {
+		if pa[i] == pb[i] {
+			continue
+		}
+		va, ea := strconv.ParseUint(pa[i], 10, 64)
+		vb, eb := strconv.ParseUint(pb[i], 10, 64)
+		if ea == nil && eb == nil {
+			if va > vb {
+				return 1
+			}
+			return -1
+		}
+		if ea == nil {
+			return -1
+		}
+		if eb == nil {
+			return 1
+		}
+		return strings.Compare(pa[i], pb[i])
+	}
+	if len(pa) > len(pb) {
+		return 1
+	}
+	if len(pa) < len(pb) {
+		return -1
+	}
+	return 0
 }

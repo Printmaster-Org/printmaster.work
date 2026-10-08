@@ -30,7 +30,11 @@ Health endpoint: `/healthz`.
 
 ## Release catalog updates
 
-The site reads public GitHub Release metadata once at startup and serves an in-memory catalog. It never downloads or proxies release binaries. After an Agent or Server stable/beta release is published, the PrintMaster release workflow sends a signed notification to `POST /api/releases/refresh`; the site refreshes metadata and the downloads page links directly to GitHub assets. Duplicate notifications for a release already in the catalog are ignored.
+The site reads public GitHub Release metadata once at startup and serves an in-memory catalog. It never downloads or proxies release binaries. After an Agent or Server Stable, Beta, or Dev release is published, the PrintMaster release workflow sends a signed notification to `POST /api/releases/refresh`; the site refreshes metadata and the downloads page links directly to GitHub assets. Duplicate notifications for a release already in the catalog are ignored.
+
+`GET /api/releases` returns separate `stable`, `beta`, and `dev` arrays for each component, with at most five releases per channel. `-dev`/`-dev.*` tags go only to Dev; other prerelease tags or releases flagged as prereleases go to Beta. Build metadata does not change a channel. Stable and Beta sort by semantic version, and Dev by publication time. Catalog reads scan up to ten pages of 100 GitHub releases so frequent Dev publishing does not crowd Beta out.
+
+Stable stays the featured production download. Beta is visible with testing and installation caveats. Dev is tucked into a collapsed **Developer builds (Dev)** disclosure with a warning, never mixed into Beta. Agent Beta releases have no MSI; download the executable or versioned DEB/RPM assets. APT/DNF repository commands remain Stable-only.
 
 To enable automatic refresh:
 

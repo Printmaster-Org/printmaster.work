@@ -5,6 +5,7 @@
   const latestSection = document.querySelector('#latest-release');
   const previousSection = document.querySelector('#previous-releases');
   const betaSection = document.querySelector('#beta-releases');
+  const devSection = document.querySelector('#dev-releases');
   const panel = document.querySelector('#release-content');
   const tabs = [...document.querySelectorAll('.component-tab')];
   let catalog = null;
@@ -137,7 +138,9 @@
     latestSection.replaceChildren();
     latestSection.setAttribute('aria-labelledby', 'latest-heading');
     latestSection.append(element('div', 'section-kicker', 'LATEST STABLE RELEASE'));
-    latestSection.append(element('h2', 'release-section-title', 'Ready for production'));
+    const title = element('h2', 'release-section-title', 'Ready for production');
+    title.id = 'latest-heading';
+    latestSection.append(title);
 
     const release = channels.stable?.[0];
     if (!release) {
@@ -172,7 +175,9 @@
     previousSection.replaceChildren();
     const older = channels.stable?.slice(1) || [];
     const header = element('div', 'release-list-header');
-    header.append(element('div', 'section-kicker', 'STABLE HISTORY'), element('h2', 'release-section-title', 'Previous versions'));
+    const title = element('h2', 'release-section-title', 'Previous versions');
+    title.id = 'previous-heading';
+    header.append(element('div', 'section-kicker', 'STABLE HISTORY'), title);
     previousSection.append(header);
     if (!older.length) {
       previousSection.append(element('p', 'release-empty-note', 'No previous stable versions listed yet.'));
@@ -201,7 +206,12 @@
   function renderBeta(component, channels) {
     betaSection.replaceChildren();
     const header = element('div', 'beta-heading');
-    header.append(element('div', 'section-kicker', 'EARLY ACCESS'), element('h2', 'release-section-title', 'Beta builds'), element('p', '', 'Pre-release software may be incomplete or change without notice. Use beta builds for testing, not production fleets.'));
+    const title = element('h2', 'release-section-title', 'Beta builds');
+    title.id = 'beta-heading';
+    header.append(element('div', 'section-kicker', 'EARLY ACCESS'), title, element('p', '', 'Pre-release software may be incomplete or change without notice. Use Beta builds for testing, not production fleets.'));
+    if (component === 'agent') {
+      header.append(element('p', '', 'Beta has no MSI installer. Use its Windows executable, versioned DEB/RPM assets, or Docker image. APT/DNF repository commands install Stable.'));
+    }
     betaSection.append(header);
     const releases = channels.beta || [];
     if (!releases.length) {
@@ -209,9 +219,13 @@
       return;
     }
 
-    const list = element('div', 'beta-release-list');
+    betaSection.append(prereleaseList(component, releases, 'beta'));
+  }
+
+  function prereleaseList(component, releases, channel) {
+    const list = element('div', `${channel}-release-list`);
     releases.forEach((release) => {
-      const card = element('details', 'beta-release-card');
+      const card = element('details', `${channel}-release-card previous-release-card`);
       const summary = element('summary', 'previous-release-summary');
       summary.append(element('span', 'previous-version', `v${release.version}`), element('span', 'previous-name', release.name || release.tag_name), element('time', 'release-date', formatDate(release.published_at)), element('span', 'expand-icon', '+'));
       card.append(summary);
@@ -222,7 +236,23 @@
       card.append(details);
       list.append(card);
     });
-    betaSection.append(list);
+    return list;
+  }
+
+  function renderDev(component, channels) {
+    devSection.replaceChildren();
+    const disclosure = element('details', 'developer-builds');
+    disclosure.append(element('summary', '', 'Developer builds (Dev)'));
+    const content = element('div', 'developer-builds-content');
+    content.append(element('p', '', 'For developers and targeted debugging only, not general consumption or production fleets. Dev builds come from main and have not completed a Beta cycle.'));
+    const releases = channels.dev || [];
+    if (releases.length) {
+      content.append(prereleaseList(component, releases, 'dev'));
+    } else {
+      content.append(element('p', 'release-empty-note', 'No Dev builds are currently listed.'));
+    }
+    disclosure.append(content);
+    devSection.append(disclosure);
   }
 
   function renderCatalog() {
@@ -231,6 +261,7 @@
     renderLatest(selectedComponent, channels);
     renderPrevious(selectedComponent, channels);
     renderBeta(selectedComponent, channels);
+    renderDev(selectedComponent, channels);
     status.textContent = catalog.stale
       ? 'GitHub is temporarily unavailable; showing recently cached releases.'
       : `Release metadata refreshed ${formatDate(catalog.fetched_at)} · Downloads served by GitHub.`;
