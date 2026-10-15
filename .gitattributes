@@ -1,0 +1,2 @@
+# Git hooks must stay LF so they run on Linux/macOS checkouts.
+.githooks/* text eol=lf

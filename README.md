@@ -48,7 +48,15 @@ The workflow skips notification if its secret is unset, and notification failure
 
 - Pull requests run Go tests, `go vet`, and a Docker build without publishing.
 - Pushes to `main` run Go tests, then publish the image to GHCR.
-- Dependabot checks Go modules, Docker base images, and GitHub Actions weekly.
+- Dependabot checks Go modules, Docker base images, and GitHub Actions weekly, using `chore(deps): …` commit messages.
+
+## Commit messages
+
+Commits use [Conventional Commits](https://www.conventionalcommits.org/) (`type(scope): summary`); see [AGENTS.md](AGENTS.md). Enable the enforcing hook once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
 
 ## Site content
 
