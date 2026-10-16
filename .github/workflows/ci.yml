@@ -33,6 +33,9 @@ jobs:
       - name: Run go vet
         run: go vet ./...
 
+      - name: Test Scans embed messaging
+        run: node --test tests/scans-embed.test.cjs
+
   docker-check:
     name: Verify Docker build
     if: github.event_name == 'pull_request'

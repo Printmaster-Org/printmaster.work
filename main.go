@@ -68,7 +68,11 @@ func newHandlerWithReleaseService(releases *releaseCatalogService) (http.Handler
 	}
 	renderPage := func(name string, home bool) ([]byte, error) {
 		var page bytes.Buffer
-		data := struct{ Home bool }{Home: home}
+		data := struct {
+			Home      bool
+			Downloads bool
+			Scans     bool
+		}{Home: home, Downloads: name == "downloads.html", Scans: name == "scans.html"}
 		if err := pages.ExecuteTemplate(&page, name, data); err != nil {
 			return nil, fmt.Errorf("render %s: %w", name, err)
 		}
@@ -82,6 +86,10 @@ func newHandlerWithReleaseService(releases *releaseCatalogService) (http.Handler
 	if err != nil {
 		return nil, err
 	}
+	scansPage, err := renderPage("scans.html", false)
+	if err != nil {
+		return nil, err
+	}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
@@ -91,6 +99,24 @@ func newHandlerWithReleaseService(releases *releaseCatalogService) (http.Handler
 	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(assets))))
 	mux.HandleFunc("GET /api/releases", releases.handleHTTP)
 	mux.HandleFunc("POST /api/releases/refresh", releases.handleRefreshHTTP)
+	mux.HandleFunc("GET /scans", func(w http.ResponseWriter, r *http.Request) {
+		target := "/scans/"
+		if r.URL.RawQuery != "" {
+			target += "?" + r.URL.RawQuery
+		}
+		http.Redirect(w, r, target, http.StatusPermanentRedirect)
+	})
+	mux.HandleFunc("GET /scans/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/scans/" {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-cache")
+		if _, err := w.Write(scansPage); err != nil {
+			log.Printf("write scans page: %v", err)
+		}
+	})
 	mux.HandleFunc("GET /downloads", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Cache-Control", "no-cache")

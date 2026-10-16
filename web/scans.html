@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#002b36">
+  <meta name="description" content="Set up a Windows PC for scan-to-SMB with the standalone PrintMaster Scans utility.">
+  <title>Scans · PrintMaster</title>
+  <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/scans.css">
+  <script src="/assets/scans.js" defer></script>
+</head>
+<body>
+  {{ template "header" . }}
+  <main id="main">
+    <div class="container scans-fallback">
+      <p id="scans-status" role="status">Loading PrintMaster Scans…</p>
+      <p><a href="https://scans.printmaster.work/">Open Scans standalone ↗</a> · <a href="https://docs.printmaster.work/guides/scans/">Setup guide ↗</a></p>
+      <noscript><p>Automatic sizing requires JavaScript. Open Scans standalone for the best experience.</p></noscript>
+    </div>
+    <iframe id="scans-frame" src="https://scans.printmaster.work/?embed=1" title="PrintMaster Scans setup and releases"
+      allow="clipboard-write https://scans.printmaster.work"
+      sandbox="allow-scripts allow-same-origin allow-top-navigation-by-user-activation allow-popups"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </main>
+  {{ template "footer" . }}
+</body>
+</html>

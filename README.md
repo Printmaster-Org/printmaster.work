@@ -47,6 +47,7 @@ The workflow skips notification if its secret is unset, and notification failure
 ## CI and dependency updates
 
 - Pull requests run Go tests, `go vet`, and a Docker build without publishing.
+- `node --test tests/scans-embed.test.cjs` validates iframe message handling and runs alongside Go checks in CI.
 - Pushes to `main` run Go tests, then publish the image to GHCR.
 - Dependabot checks Go modules, Docker base images, and GitHub Actions weekly, using `chore(deps): …` commit messages.
 
@@ -64,7 +65,8 @@ git config core.hooksPath .githooks
 - The shared footer loads site-wide navigation/year behavior and the async GoatCounter script (`//gc.zgo.at/count.js`), reporting public page views to `https://stats.www.printmaster.work/count`. Analytics requires JavaScript and may be blocked by browser privacy settings; it does not run on API or health endpoints. This applies only to this public website, not the documentation site or self-hosted Agent/Server UIs.
 - Every page footer links **Site stats** to `https://stats.www.printmaster.work/`. The custom stats hostname needs its GoatCounter CNAME and HTTPS configuration; dashboard visibility is controlled in GoatCounter. The docs site has its own separate analytics integration and stats link at `https://stats.docs.printmaster.work/`.
 - Windows MSI downloads link directly to versioned GitHub Release assets from `/downloads`.
-- The homepage, shared navigation, and footer link to [PrintMaster Scans](https://scans.printmaster.work/), a standalone Windows scan-to-SMB setup utility. Its [setup guide](https://docs.printmaster.work/guides/scans/) lives on the docs site; the utility is not embedded or included in Agent/Server downloads.
+- The homepage, shared navigation, and footer link to `/scans/`, which frames the independently deployed [PrintMaster Scans](https://scans.printmaster.work/?embed=1) inside this site's shared header/footer. `/scans` redirects to `/scans/`. The utility is not included in Agent/Server downloads; docs remain normal external links.
+- Deploy Scans embed support first, then redeploy this website. The iframe's origin/source-checked handshake removes its own navigation, selects the matching dark palette, and reports height/anchor positions. The wrapper delegates clipboard writes, sandboxes the frame, and always offers a standalone link; after 15 seconds without sizing confirmation it reports a connection problem. The frame remains scrollable without the bridge. Test with real HTTPS origins or browser network interception; local origins are intentionally not trusted by the bridge. No proxy, copied Scans content, or runtime build dependency is introduced.
 - Debian/Ubuntu and Fedora/RHEL installation commands point to the official package endpoints.
 - `https://docs.printmaster.work/` is the planned separate documentation site.
 - Product claims are limited to implemented Agent and Server behavior; printer data availability varies with device and SNMP configuration.

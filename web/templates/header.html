@@ -13,8 +13,8 @@
         <a href="{{ if not .Home }}/{{ end }}#platform">Platform</a>
         <a href="{{ if not .Home }}/{{ end }}#how-it-works">How it works</a>
         <a href="{{ if not .Home }}/{{ end }}#install">Install</a>
-        <a href="/downloads"{{ if not .Home }} aria-current="page"{{ end }}>Downloads</a>
-        <a href="https://scans.printmaster.work/">Scans <span aria-hidden="true">↗</span></a>
+        <a href="/downloads"{{ if .Downloads }} aria-current="page"{{ end }}>Downloads</a>
+        <a href="/scans/"{{ if .Scans }} aria-current="page"{{ end }}>Scans</a>
         <a href="https://docs.printmaster.work/">Docs <span aria-hidden="true">↗</span></a>
         <a class="nav-github" href="https://github.com/printmaster-org/printmaster" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </nav>

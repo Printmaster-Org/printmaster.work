@@ -1,0 +1,4 @@
+.scans-fallback { padding-block: 1rem; font-size: .85rem; }
+.scans-fallback p { margin-bottom: .5rem; }
+.scans-fallback a { color: var(--cyan-bright); text-decoration: underline; }
+#scans-frame { display: block; width: 100%; height: 1000px; border: 0; }

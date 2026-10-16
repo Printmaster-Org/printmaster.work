@@ -125,7 +125,7 @@ func TestWebsiteRoutes(t *testing.T) {
 		"class=\"brand-mark\" src=\"/assets/logo.svg\"",
 		"href=\"/downloads#agent\"",
 		`id="scans"`,
-		`href="https://scans.printmaster.work/">Get PrintMaster Scans`,
+		`href="/scans/">Get PrintMaster Scans`,
 		`href="https://docs.printmaster.work/guides/scans/"`,
 		`Standalone utility; no PrintMaster Agent or Server required.`,
 		"href=\"https://github.com/printmaster-org/printmaster/releases\">All releases</a>",
@@ -154,7 +154,7 @@ func TestSharedPageTemplates(t *testing.T) {
 		t.Fatalf("newHandler() error = %v", err)
 	}
 
-	for _, path := range []string{"/", "/downloads"} {
+	for _, path := range []string{"/", "/downloads", "/scans/"} {
 		t.Run(path, func(t *testing.T) {
 			t.Parallel()
 			res := httptest.NewRecorder()
@@ -171,8 +171,7 @@ func TestSharedPageTemplates(t *testing.T) {
 				`data-goatcounter="https://stats.www.printmaster.work/count"`,
 				`async src="//gc.zgo.at/count.js"`,
 				`href="https://stats.www.printmaster.work/">Site stats</a>`,
-				`href="https://scans.printmaster.work/">Scans <span`,
-				`href="https://scans.printmaster.work/">PrintMaster Scans</a>`,
+				`href="/scans/">PrintMaster Scans</a>`,
 			} {
 				if got := strings.Count(body, marker); got != 1 {
 					t.Errorf("count of %q = %d, want 1", marker, got)
@@ -182,7 +181,7 @@ func TestSharedPageTemplates(t *testing.T) {
 				t.Error("page contains unrendered or unsafe template output")
 			}
 			prefix := ""
-			if path == "/downloads" {
+			if path != "/" {
 				prefix = "/"
 			}
 			for _, anchor := range []string{"platform", "how-it-works", "install"} {
@@ -194,10 +193,55 @@ func TestSharedPageTemplates(t *testing.T) {
 			if got, want := strings.Contains(body, current), path == "/downloads"; got != want {
 				t.Errorf("downloads current-page marker = %t, want %t", got, want)
 			}
+			scansCurrent := `href="/scans/" aria-current="page"`
+			if got, want := strings.Contains(body, scansCurrent), path == "/scans/"; got != want {
+				t.Errorf("scans current-page marker = %t, want %t", got, want)
+			}
 			if got := res.Header().Get("Cache-Control"); got != "no-cache" {
 				t.Errorf("Cache-Control = %q, want no-cache", got)
 			}
+
 		})
+	}
+}
+
+func TestScansEmbedRoutes(t *testing.T) {
+	handler, err := newHandler()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{"/scans", "/scans?test=1"} {
+		res := httptest.NewRecorder()
+		handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, path, nil))
+		want := strings.Replace(path, "/scans", "/scans/", 1)
+		if res.Code != http.StatusPermanentRedirect || res.Header().Get("Location") != want {
+			t.Errorf("%s: status=%d location=%q, want 308 %q", path, res.Code, res.Header().Get("Location"), want)
+		}
+	}
+	res := httptest.NewRecorder()
+	handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/scans/", nil))
+	for _, marker := range []string{
+		`src="https://scans.printmaster.work/?embed=1"`,
+		`title="PrintMaster Scans setup and releases"`,
+		`allow="clipboard-write https://scans.printmaster.work"`,
+		`Open Scans standalone`,
+		`src="/assets/scans.js"`,
+		`href="/assets/scans.css"`,
+	} {
+		if !strings.Contains(res.Body.String(), marker) {
+			t.Errorf("Scans page missing %q", marker)
+		}
+	}
+	for _, path := range []string{"/scans/missing", "/assets/scans.js", "/assets/scans.css"} {
+		res := httptest.NewRecorder()
+		handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, path, nil))
+		want := http.StatusOK
+		if path == "/scans/missing" {
+			want = http.StatusNotFound
+		}
+		if res.Code != want {
+			t.Errorf("%s: status %d, want %d", path, res.Code, want)
+		}
 	}
 }
 
