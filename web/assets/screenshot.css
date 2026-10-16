@@ -21,8 +21,8 @@
 .preview-wrap .preview-caption {
   position: static;
   margin: 9px 3px 0;
-  color: #78999a;
-  font-size: 9px;
+  color: var(--muted);
+  font-size: 14px;
   text-align: right;
 }
 
@@ -53,6 +53,6 @@
   }
 
   .preview-wrap .preview-caption {
-    font-size: 8px;
+    text-align: left;
   }
 }

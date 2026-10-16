@@ -147,6 +147,45 @@ func TestWebsiteRoutes(t *testing.T) {
 	}
 }
 
+func TestHomepageArchitecture(t *testing.T) {
+	handler, err := newHandler()
+	if err != nil {
+		t.Fatalf("newHandler() error = %v", err)
+	}
+	res := httptest.NewRecorder()
+	handler.ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/", nil))
+	body := res.Body.String()
+
+	// The animation reuses the drawn paths, from each Agent up to the Server.
+	for _, flow := range []struct {
+		id   string
+		path string
+	}{
+		{"agent-flow-left", "M100 112 V56 H300 V0"},
+		{"agent-flow-mid", "M300 112 V0"},
+		{"agent-flow-right", "M500 112 V56 H300 V0"},
+	} {
+		for _, marker := range []string{
+			`<path id="` + flow.id + `" d="` + flow.path + `"/>`,
+			`<use href="#` + flow.id + `"/>`,
+			`<mpath href="#` + flow.id + `"/>`,
+		} {
+			if got := strings.Count(body, marker); got != 1 {
+				t.Errorf("count of %q = %d, want 1", marker, got)
+			}
+		}
+	}
+	if got := strings.Count(body, `class="site-footer"`); got != 1 {
+		t.Errorf("page footer class used %d times, want 1; diagram cards must not inherit page footer styles", got)
+	}
+	if got := strings.Count(body, `class="site-card-footer"`); got != 3 {
+		t.Errorf("diagram card footers = %d, want 3", got)
+	}
+	if strings.Contains(body, `class="arch-lines"`) {
+		t.Error("homepage still contains disconnected legacy diagram lines")
+	}
+}
+
 func TestSharedPageTemplates(t *testing.T) {
 	t.Parallel()
 	handler, err := newHandler()
