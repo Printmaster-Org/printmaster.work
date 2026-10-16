@@ -124,6 +124,10 @@ func TestWebsiteRoutes(t *testing.T) {
 		"<link rel=\"icon\" href=\"/assets/logo.svg\"",
 		"class=\"brand-mark\" src=\"/assets/logo.svg\"",
 		"href=\"/downloads#agent\"",
+		`id="scans"`,
+		`href="https://scans.printmaster.work/">Get PrintMaster Scans`,
+		`href="https://docs.printmaster.work/guides/scans/"`,
+		`Standalone utility; no PrintMaster Agent or Server required.`,
 		"href=\"https://github.com/printmaster-org/printmaster/releases\">All releases</a>",
 	} {
 		if !strings.Contains(res.Body.String(), content) {
@@ -167,6 +171,8 @@ func TestSharedPageTemplates(t *testing.T) {
 				`data-goatcounter="https://stats.www.printmaster.work/count"`,
 				`async src="//gc.zgo.at/count.js"`,
 				`href="https://stats.www.printmaster.work/">Site stats</a>`,
+				`href="https://scans.printmaster.work/">Scans <span`,
+				`href="https://scans.printmaster.work/">PrintMaster Scans</a>`,
 			} {
 				if got := strings.Count(body, marker); got != 1 {
 					t.Errorf("count of %q = %d, want 1", marker, got)

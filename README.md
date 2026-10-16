@@ -64,6 +64,7 @@ git config core.hooksPath .githooks
 - The shared footer loads site-wide navigation/year behavior and the async GoatCounter script (`//gc.zgo.at/count.js`), reporting public page views to `https://stats.www.printmaster.work/count`. Analytics requires JavaScript and may be blocked by browser privacy settings; it does not run on API or health endpoints. This applies only to this public website, not the documentation site or self-hosted Agent/Server UIs.
 - Every page footer links **Site stats** to `https://stats.www.printmaster.work/`. The custom stats hostname needs its GoatCounter CNAME and HTTPS configuration; dashboard visibility is controlled in GoatCounter. The docs site has its own separate analytics integration and stats link at `https://stats.docs.printmaster.work/`.
 - Windows MSI downloads link directly to versioned GitHub Release assets from `/downloads`.
+- The homepage, shared navigation, and footer link to [PrintMaster Scans](https://scans.printmaster.work/), a standalone Windows scan-to-SMB setup utility. Its [setup guide](https://docs.printmaster.work/guides/scans/) lives on the docs site; the utility is not embedded or included in Agent/Server downloads.
 - Debian/Ubuntu and Fedora/RHEL installation commands point to the official package endpoints.
 - `https://docs.printmaster.work/` is the planned separate documentation site.
 - Product claims are limited to implemented Agent and Server behavior; printer data availability varies with device and SNMP configuration.
