@@ -2,12 +2,15 @@
 
 This is the PrintMaster product website, published at printmaster.work. The application lives in **Printmaster-Org/printmaster** (`../printmaster`), and the canonical documentation lives in **Printmaster-Org/docs.printmaster.work** (`../docs.printmaster.work`).
 
-## Keep the docs site in sync (required)
+## Documentation impact (required check)
 
-- Review documentation impact for every feature, fix, removal, and deprecation. Changes to website behavior, downloads, releases, deployment, configuration, or UI must update the relevant canonical pages under `../docs.printmaster.work/content/` in the same task.
-- Keep source-local READMEs and examples accurate, but link to the canonical docs rather than duplicating full guides. Follow the docs repository's [README](../docs.printmaster.work/README.md) for editing and validation.
-- Link implementation and documentation commits or PRs, and report the updated pages and validation. If no documentation change is needed, explicitly explain why.
-- If the docs checkout is unavailable, report the blocker and exact pages needing updates; do not silently leave docs stale or report the task as complete.
+The canonical public user/operator documentation lives in **Printmaster-Org/docs.printmaster.work**, normally at `../docs.printmaster.work`. Assess documentation impact for every change; not every website or code change needs a documentation edit.
+
+- Update canonical pages when a product-website change alters a user-facing task, supported behavior, downloads, releases, setup/configuration, deployment, or other guidance users and operators rely on. Keep the update focused on the changed reader need.
+- Internal refactors, test-only changes, and build/CI maintenance normally need no docs-site edit when public behavior and instructions are unchanged. Keep this repository's README and deployment notes accurate when their own developer/operator instructions change.
+- Link to canonical guides instead of duplicating them. The public docs site is not a place for implementation diaries, commit-by-commit audit notes, internal backlogs, or engineering progress reports.
+- Follow the docs repository's [README](../docs.printmaster.work/README.md) for editing and validation when a docs change is needed. In the completion summary, state pages updated or briefly explain why no public-doc change was needed. Link paired implementation/docs commits or PRs when both changed.
+- If the docs checkout is unavailable and a reader-facing update is required, report the blocker and exact pages needing updates; do not silently leave public guidance stale.
 
 ## Commit messages (required)
 
